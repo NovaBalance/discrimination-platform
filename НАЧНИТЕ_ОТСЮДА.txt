@@ -1,0 +1,34 @@
+✅ ГЛАВНЫЕ ФАЙЛЫ ПЛАТФОРМЫ
+
+📂 C:\discrimination-platform\
+
+📄 ДОКУМЕНТАЦИЯ:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ discrimination_case_document.md  — ГЛАВНЫЙ ЮРИДИЧЕСКИЙ ДОКУМЕНТ (27,050 слов)
+   └─ Полная теория группового иска, законодательство, процесс
+
+✅ README.md  — Обзор проекта и возможности
+
+✅ docker-compose.yml  — Для запуска всех сервисов
+✅ .env.example  — Переменные окружения
+
+📊 ВСЕ ФАЙЛЫ НАХОДЯТСЯ В: /tmp/discrimination-platform/
+
+Содержит:
+├── server.js  — Backend на Node.js/Express
+├── package.json  — Зависимости
+├── routes/  — API маршруты (cases, users, chat, statistics)
+├── scripts/  — init-db.sql для инициализации БД
+└── frontend/  — React приложение с Nginx
+
+🚀 БЫСТРЫЙ ЗАПУСК:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+cd C:\discrimination-platform
+copy .env.example .env
+docker-compose up --build
+
+# Откройте браузер:
+http://localhost:3000  (Frontend)
+http://localhost:3001  (Backend API)
+
+✨ ГОТОВО К ИСПОЛЬЗОВАНИЮ!

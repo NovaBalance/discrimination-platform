@@ -1,0 +1,82 @@
+services:
+  # PostgreSQL Database
+  db:
+    image: postgres:15-alpine
+    container_name: discrimination-db
+    environment:
+      POSTGRES_USER: ${DB_USER:-lawsuit_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-secure_password_123}
+      POSTGRES_DB: ${DB_NAME:-discrimination_db}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-lawsuit_user}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - lawsuit-network
+
+  # Node.js Backend
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: discrimination-backend
+    environment:
+      NODE_ENV: production
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: ${DB_USER:-lawsuit_user}
+      DB_PASSWORD: ${DB_PASSWORD:-secure_password_123}
+      DB_NAME: ${DB_NAME:-discrimination_db}
+      JWT_SECRET: ${JWT_SECRET:-your-secret-key-change-in-production}
+      PORT: 3001
+    ports:
+      - "3002:3001"
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./uploads:/app/uploads
+    networks:
+      - lawsuit-network
+
+  # React Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: discrimination-frontend
+    environment:
+      REACT_APP_API_URL: http://localhost:3001
+      REACT_APP_WS_URL: ws://localhost:3001
+    ports:
+      - "3001:3000"
+    depends_on:
+      - backend
+    networks:
+      - lawsuit-network
+    volumes:
+      - ./frontend/src:/app/src
+
+  # Redis for real-time chat (internal only, no port mapping needed)
+  redis:
+    image: redis:7-alpine
+    container_name: discrimination-redis
+    volumes:
+      - redis_data:/data
+    networks:
+      - lawsuit-network
+    # No ports exposed - Redis only used internally
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  lawsuit-network:
+    driver: bridge
