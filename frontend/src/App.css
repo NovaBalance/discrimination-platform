@@ -261,6 +261,40 @@ body {
 
 .views { color: #999; font-size: 0.9rem; }
 
+/* Sessions */
+.sessions-intro { color: #666; margin-bottom: 1.5rem; }
+
+.sessions-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.session-card {
+  background: white;
+  padding: 1.25rem 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-left: 4px solid #667eea;
+  transition: all 0.3s;
+}
+
+.session-card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  transform: translateY(-2px);
+}
+
+.session-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.35rem 0;
+  font-size: 0.95rem;
+}
+
+.session-row + .session-row { border-top: 1px solid #f0f0f0; }
+
+.session-label { color: #667eea; font-weight: 600; }
+
 /* Form */
 .submit-page h2 { 
   color: #667eea;

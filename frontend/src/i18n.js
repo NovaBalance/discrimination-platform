@@ -6,7 +6,8 @@ export const translations = {
       home: "Главная",
       addCase: "➕ Добавить случай",
       cases: "Случаи",
-      statistics: "Статистика"
+      statistics: "Статистика",
+      sessions: "🕓 Сессии"
     },
     hero: {
       title: "⚔️ Борьба с дискриминацией ИИ",
@@ -119,6 +120,16 @@ export const translations = {
       noData: "Данных пока нет",
       loading: "⏳ Загрузка статистики..."
     },
+    sessions: {
+      title: "🕓 Недавние сессии",
+      intro: "Ваши последние посещения этой платформы — время и местоположение.",
+      empty: "🤔 Недавних сессий пока нет.",
+      page: "📄 Страница:",
+      location: "📍 Местоположение:",
+      started: "🟢 Начало:",
+      lastSeen: "⏱️ Активность:",
+      unknown: "Неизвестно"
+    },
     footer: {
       copyright: "© 2025 Платформа по борьбе с дискриминацией ИИ. Все права защищены.",
       description: "Эта платформа помогает документировать и организовывать групповые иски против компаний разработчиков ИИ."
@@ -132,7 +143,8 @@ export const translations = {
       home: "Home",
       addCase: "➕ Add Case",
       cases: "Cases",
-      statistics: "Statistics"
+      statistics: "Statistics",
+      sessions: "🕓 Sessions"
     },
     hero: {
       title: "⚔️ Fight AI Discrimination",
@@ -245,6 +257,16 @@ export const translations = {
       noData: "No data yet",
       loading: "⏳ Loading statistics..."
     },
+    sessions: {
+      title: "🕓 Recent Sessions",
+      intro: "Your latest visits to this platform — time and location.",
+      empty: "🤔 No recent sessions yet.",
+      page: "📄 Page:",
+      location: "📍 Location:",
+      started: "🟢 Started:",
+      lastSeen: "⏱️ Last seen:",
+      unknown: "Unknown"
+    },
     footer: {
       copyright: "© 2025 AI Discrimination Lawsuit Platform. All rights reserved.",
       description: "This platform helps document and organize class action lawsuits against AI companies."
@@ -258,7 +280,8 @@ export const translations = {
       home: "Inicio",
       addCase: "➕ Agregar Caso",
       cases: "Casos",
-      statistics: "Estadísticas"
+      statistics: "Estadísticas",
+      sessions: "🕓 Sesiones"
     },
     hero: {
       title: "⚔️ Lucha contra la Discriminación de IA",
@@ -370,6 +393,16 @@ export const translations = {
       byCountry: "🌍 Países Principales",
       noData: "Sin datos aún",
       loading: "⏳ Cargando estadísticas..."
+    },
+    sessions: {
+      title: "🕓 Sesiones Recientes",
+      intro: "Tus últimas visitas a esta plataforma — hora y ubicación.",
+      empty: "🤔 Aún no hay sesiones recientes.",
+      page: "📄 Página:",
+      location: "📍 Ubicación:",
+      started: "🟢 Inicio:",
+      lastSeen: "⏱️ Última actividad:",
+      unknown: "Desconocido"
     },
     footer: {
       copyright: "© 2025 Plataforma de Demanda Colectiva por Discriminación de IA. Todos los derechos reservados.",

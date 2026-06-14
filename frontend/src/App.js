@@ -8,14 +8,56 @@ function App() {
   const [language, setLanguage] = useState(localStorage.getItem('language') || 'ru');
   const [cases, setCases] = useState([]);
   const [stats, setStats] = useState(null);
+  const [sessions, setSessions] = useState([]);
 
   const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3002/api';
   const t = (key) => getTranslation(language, key);
+
+  // Stable per-browser identifier so a visitor's sessions can be grouped.
+  const getClientId = () => {
+    let id = localStorage.getItem('clientId');
+    if (!id) {
+      id = (window.crypto?.randomUUID?.() ||
+        `c-${Date.now()}-${Math.random().toString(36).slice(2)}`);
+      localStorage.setItem('clientId', id);
+    }
+    return id;
+  };
 
   useEffect(() => {
     localStorage.setItem('language', language);
     fetchStatistics();
   }, [language]);
+
+  // Track a session once on load, then refresh on navigation.
+  useEffect(() => {
+    trackSession();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage]);
+
+  const trackSession = async () => {
+    try {
+      await axios.post(`${API_URL}/sessions/track`, {
+        clientId: getClientId(),
+        page: currentPage,
+        language,
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+      });
+    } catch (error) {
+      console.error('Error tracking session:', error);
+    }
+  };
+
+  const fetchSessions = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/sessions/recent`, {
+        params: { clientId: getClientId(), limit: 20 }
+      });
+      setSessions(response.data.data || []);
+    } catch (error) {
+      console.error('Error fetching sessions:', error);
+    }
+  };
 
   const fetchStatistics = async () => {
     try {
@@ -78,6 +120,9 @@ function App() {
             <button onClick={() => setCurrentPage('statistics')} className={currentPage === 'statistics' ? 'active' : ''}>
               {t('header.statistics')}
             </button>
+            <button onClick={() => {setCurrentPage('sessions'); fetchSessions();}} className={currentPage === 'sessions' ? 'active' : ''}>
+              {t('header.sessions')}
+            </button>
           </nav>
         </div>
       </header>
@@ -88,6 +133,7 @@ function App() {
           {currentPage === 'submit' && <SubmitCasePage onSubmit={handleAddCase} t={t} />}
           {currentPage === 'cases' && <CasesPage cases={cases} t={t} />}
           {currentPage === 'statistics' && <StatisticsPage stats={stats} t={t} />}
+          {currentPage === 'sessions' && <SessionsPage sessions={sessions} t={t} />}
         </div>
       </main>
 
@@ -508,6 +554,49 @@ function StatisticsPage({ stats, t }) {
       ) : (
         <p style={{textAlign: 'center', color: '#999', padding: '2rem'}}>{t('statistics.loading')}</p>
       )}
+    </div>
+  );
+}
+
+function SessionsPage({ sessions, t }) {
+  const formatDateTime = (value) =>
+    value ? new Date(value).toLocaleString() : 'N/A';
+
+  return (
+    <div className="page sessions-page">
+      <h2>{t('sessions.title')}</h2>
+      <p className="sessions-intro">{t('sessions.intro')}</p>
+      <div className="sessions-list">
+        {sessions.length === 0 ? (
+          <p style={{textAlign: 'center', color: '#999', padding: '2rem'}}>
+            {t('sessions.empty')}
+          </p>
+        ) : (
+          sessions.map(session => (
+            <div key={session.id} className="session-card">
+              <div className="session-row">
+                <span className="session-label">{t('sessions.page')}</span>
+                <span>{session.page || 'N/A'}</span>
+              </div>
+              <div className="session-row">
+                <span className="session-label">{t('sessions.location')}</span>
+                <span>
+                  {session.location?.timezone || t('sessions.unknown')}
+                  {session.location?.country ? ` · ${session.location.country}` : ''}
+                </span>
+              </div>
+              <div className="session-row">
+                <span className="session-label">{t('sessions.started')}</span>
+                <span>{formatDateTime(session.startedAt)}</span>
+              </div>
+              <div className="session-row">
+                <span className="session-label">{t('sessions.lastSeen')}</span>
+                <span>{formatDateTime(session.lastSeen)}</span>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
     </div>
   );
 }

@@ -23,11 +23,13 @@ const casesRouter = require('./routes/cases');
 const usersRouter = require('./routes/users');
 const chatRouter = require('./routes/chat');
 const statisticsRouter = require('./routes/statistics');
+const sessionsRouter = require('./routes/sessions');
 
 app.use('/api/cases', casesRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/chat', chatRouter);
 app.use('/api/statistics', statisticsRouter);
+app.use('/api/sessions', sessionsRouter);
 
 // Health check
 app.get('/health', (req, res) => {
